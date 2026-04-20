@@ -1,0 +1,4 @@
+- name: Deploy Jenkins
+  shell: |
+    kubectl create deployment jenkins --image=jenkins/jenkins:lts
+    kubectl expose deployment jenkins --port=8080 --type=NodePort

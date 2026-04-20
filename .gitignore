@@ -1,0 +1,28 @@
+# 🔐 secrets
+*.pem
+.env
+
+# 🐳 docker
+node_modules/
+__pycache__/
+*.log
+
+# 🧱 builds
+dist/
+build/
+
+# 🐍 python
+venv/
+.env/
+
+# 🖥️ OS
+.DS_Store
+Thumbs.db
+
+# ⚙️ terraform
+*.tfstate
+*.tfstate.backup
+.terraform/
+
+# 🔥 ansible sensitive
+inventory.ini

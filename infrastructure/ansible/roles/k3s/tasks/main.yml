@@ -1,0 +1,45 @@
+# 🧹 احذف أي نسخة قديمة (حل جذري)
+- name: Uninstall old k3s if exists
+  shell: |
+    /usr/local/bin/k3s-uninstall.sh || true
+
+# 🔥 تثبيت k3s صح
+- name: Install k3s clean
+  shell: |
+    curl -sfL https://get.k3s.io | INSTALL_K3S_SKIP_SELINUX_RPM=true INSTALL_K3S_EXEC="--write-kubeconfig-mode=644" sh -
+  args:
+    executable: /bin/bash
+
+# 🟢 تأكد إن السيرفيس شغال
+- name: Ensure k3s is running
+  systemd:
+    name: k3s
+    state: started
+    enabled: yes
+
+# 🟢 استنى لحد ما النود تبقى ready
+- name: Wait for k3s
+  shell: |
+    sudo k3s kubectl get nodes
+  register: result
+  retries: 20
+  delay: 10
+  until: result.rc == 0
+
+# 🟢 تأكد إن الملف موجود قبل النسخ
+- name: Check kubeconfig exists
+  stat:
+    path: /etc/rancher/k3s/k3s.yaml
+  register: kubeconfig_file
+
+- name: Copy kubeconfig
+  shell: |
+    sudo cp /etc/rancher/k3s/k3s.yaml /home/ec2-user/kubeconfig
+  when: kubeconfig_file.stat.exists
+
+- name: Fix ownership
+  file:
+    path: /home/ec2-user/kubeconfig
+    owner: ec2-user
+    group: ec2-user
+  when: kubeconfig_file.stat.exists
