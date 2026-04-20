@@ -16,20 +16,50 @@ conn = psycopg2.connect(
 
 cur = conn.cursor()
 
-# 🧠 مهم: شوف هل الجدول فاضي ولا لا
+# 🟢 create users table لو مش موجود
+cur.execute("""
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE,
+    password VARCHAR(255)
+)
+""")
+
+# 🟢 add admin user
+cur.execute("SELECT COUNT(*) FROM users")
+user_count = cur.fetchone()[0]
+
+if user_count == 0:
+    cur.execute(
+        "INSERT INTO users (email, password) VALUES (%s, %s)",
+        ("admin@gmail.com", "123456")
+    )
+    print("✅ Admin user created")
+else:
+    print("ℹ️ User already exists")
+
+# 🟢 products
+cur.execute("""
+CREATE TABLE IF NOT EXISTS products (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255),
+    price INTEGER,
+    description TEXT
+)
+""")
+
 cur.execute("SELECT COUNT(*) FROM products")
 count = cur.fetchone()[0]
 
-# لو فاضي بس → اعمل seed
 if count == 0:
     for name, price, desc in products:
         cur.execute(
             "INSERT INTO products (name, price, description) VALUES (%s, %s, %s)",
             (name, price, desc)
         )
-    print("✅ Seeded initial products")
+    print("✅ Seeded products")
 else:
-    print("ℹ️ Data already exists, skipping seed")
+    print("ℹ️ Products already exist")
 
 conn.commit()
 cur.close()
