@@ -10,7 +10,7 @@ export default function Products() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/products");
+        const response = await axios.get("http://3.232.130.46:30007/api/products");
         setProducts(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         setProducts([]);
