@@ -6,47 +6,42 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      # 1. جلب الكود من المستودع
-      - name: Checkout Code
-        uses: actions/checkout@v4 # تحديث للإصدار الأحدث
+      # 1. جلب الكود
+      - name: Checkout
+        uses: actions/checkout@v4
 
       # 2. تسجيل الدخول إلى Docker Hub
-      - name: Login to DockerHub
+      - name: Login DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 3. بناء ورفع صورة الـ Backend
-      - name: Build and Push Backend
-        uses: docker/build-push-action@v5
-        with:
-          context: ./backend
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/backend:latest
+      # 3. بناء ورفع صور الـ Docker (Backend)
+      - name: Build & Push Backend
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:latest ./backend
+          docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest
 
-      # 4. بناء ورفع صورة الـ Frontend
-      - name: Build and Push Frontend
-        uses: docker/build-push-action@v5
-        with:
-          context: ./frontend
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+      # 4. بناء ورفع صور الـ Docker (Frontend)
+      - name: Build & Push Frontend
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest ./frontend
+          docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
 
-      # 5. الاتصال بـ EC2 والتحديث
-      - name: Deploy to EC2
+      # 5. تنفيذ الـ Deployment على السيرفر
+      - name: Deploy to EC2 (K3s)
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # سحب الصور الجديدة أولاً لضمان عدم استخدام الكاش القديم
+            # تطبيق ملفات المانيفست
+            sudo k3s kubectl apply -f k8s/
+            # إعادة التشغيل لضمان سحب الـ images الجديدة (Latest)
             sudo k3s kubectl rollout restart deployment/backend-deployment
             sudo k3s kubectl rollout restart deployment/frontend-deployment
-            # تطبيق أي تغييرات في ملفات الـ YAML
-            sudo k3s kubectl apply -f k8s/
