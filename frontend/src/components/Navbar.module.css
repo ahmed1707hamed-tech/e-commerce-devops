@@ -7,6 +7,18 @@
   align-items: center;
   justify-content: space-between;
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  gap: 14px;
+}
+
+.menuButton {
+  display: none;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 8px 12px;
+  min-height: 40px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .label {
@@ -47,9 +59,20 @@
 }
 
 @media (max-width: 680px) {
+  .menuButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .navbar {
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
     gap: 10px;
+  }
+
+  .meta {
+    width: 100%;
+    justify-content: space-between;
   }
 }

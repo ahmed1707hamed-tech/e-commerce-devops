@@ -2,7 +2,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes import products, auth
 
-app = FastAPI()
+app = FastAPI(
+    title="E-Commerce API",
+    description="Backend API for product and authentication management.",
+    version="1.0.0"
+)
 
 # 👇 ده أهم جزء
 app.add_middleware(
@@ -13,8 +17,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(products.router, prefix="/api/products")
-app.include_router(auth.router, prefix="/api/auth")
+app.include_router(products.router, prefix="/api/products", tags=["Products"])
+app.include_router(auth.router, prefix="/api/auth", tags=["Auth"])
 
 @app.get("/")
 def root():

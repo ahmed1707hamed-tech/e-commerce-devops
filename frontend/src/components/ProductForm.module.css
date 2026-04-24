@@ -58,8 +58,29 @@
   cursor: not-allowed;
 }
 
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.cancelButton {
+  background: #e5e7eb !important;
+  color: #111827 !important;
+}
+
 .validationError {
   margin: 0;
   color: #b91c1c;
   font-size: 13px;
+}
+
+@media (max-width: 680px) {
+  .actions {
+    flex-direction: column;
+  }
+
+  .actions button {
+    width: 100%;
+    min-height: 44px;
+  }
 }

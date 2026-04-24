@@ -44,6 +44,12 @@
   grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
 }
 
+.formsColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .message {
   margin: 0 0 10px;
   color: #6b7280;
@@ -75,5 +81,20 @@
 
   .contentGrid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .main {
+    padding: 12px;
+  }
+
+  .statCard {
+    padding: 16px;
+  }
+
+  .message,
+  .error {
+    font-size: 13px;
   }
 }

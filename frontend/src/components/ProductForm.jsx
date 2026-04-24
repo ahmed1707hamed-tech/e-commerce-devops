@@ -1,11 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ProductForm.module.css";
 
 const initialForm = { name: "", price: "" };
 
-export default function ProductForm({ onSubmit, isSubmitting }) {
+export default function ProductForm({
+  onSubmit,
+  isSubmitting,
+  initialValues = initialForm,
+  title = "Add New Product",
+  submitLabel = "Add Product",
+  submittingLabel = "Saving...",
+  onCancel,
+}) {
   const [form, setForm] = useState(initialForm);
   const [validationError, setValidationError] = useState("");
+
+  useEffect(() => {
+    setForm({
+      name: initialValues?.name ?? "",
+      price: initialValues?.price ?? "",
+    });
+  }, [initialValues]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -26,12 +41,14 @@ export default function ProductForm({ onSubmit, isSubmitting }) {
       name: form.name.trim(),
       price: priceNumber,
     });
-    setForm(initialForm);
+    if (!onCancel) {
+      setForm(initialForm);
+    }
   };
 
   return (
     <div className={styles.card}>
-      <h3>Add New Product</h3>
+      <h3>{title}</h3>
       <form className={styles.form} onSubmit={handleSubmit}>
         <label>
           Product Name
@@ -61,9 +78,21 @@ export default function ProductForm({ onSubmit, isSubmitting }) {
           <p className={styles.validationError}>{validationError}</p>
         ) : null}
 
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Adding..." : "Add Product"}
-        </button>
+        <div className={styles.actions}>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? submittingLabel : submitLabel}
+          </button>
+          {onCancel ? (
+            <button
+              type="button"
+              className={styles.cancelButton}
+              onClick={onCancel}
+              disabled={isSubmitting}
+            >
+              Cancel
+            </button>
+          ) : null}
+        </div>
       </form>
     </div>
   );
