@@ -1,0 +1,6 @@
+- hosts: web
+  become: yes
+
+  tasks:
+    - name: Deploy app using kubectl
+      shell: kubectl apply -f /home/ubuntu/app/

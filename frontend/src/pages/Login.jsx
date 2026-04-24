@@ -1,9 +1,7 @@
 import React, { useMemo, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 import styles from "./Login.module.css";
-
-const API_URL = "http://3.232.130.46:30007/api/auth/login";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -29,7 +27,7 @@ export default function Login() {
     setError("");
 
     try {
-      await axios.post(API_URL, {
+      await api.post("/auth/login", {
         email: email.trim(),
         password: password.trim(),
       });

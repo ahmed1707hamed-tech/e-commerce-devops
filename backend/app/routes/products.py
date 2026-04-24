@@ -13,6 +13,7 @@ def get_connection():
     )
 
 # ✅ GET (من الداتا بيز)
+@router.get("")
 @router.get("/")
 def get_products():
     conn = get_connection()
@@ -36,6 +37,7 @@ def get_products():
 
 
 # ✅ POST (يضيف في الداتا بيز)
+@router.post("")
 @router.post("/")
 def add_product(product: dict):
     conn = get_connection()

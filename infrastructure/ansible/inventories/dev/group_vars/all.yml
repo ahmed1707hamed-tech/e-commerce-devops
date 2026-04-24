@@ -1,0 +1,7 @@
+docker_users:
+  - ubuntu
+
+jenkins_port: 8080
+nginx_port: 80
+
+domain_name: _

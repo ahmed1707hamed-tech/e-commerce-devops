@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../services/api";
 import styles from "./Products.module.css";
 
 export default function Products() {
@@ -10,7 +10,7 @@ export default function Products() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://3.232.130.46:30007/api/products");
+        const response = await api.get("/products/");
         setProducts(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         setProducts([]);

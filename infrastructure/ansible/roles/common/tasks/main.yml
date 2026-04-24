@@ -1,0 +1,22 @@
+- name: Install python3-pip
+  yum:
+    name: python3-pip
+    state: present
+
+- name: Upgrade pip
+  pip:
+    name: pip
+    executable: pip3
+    state: latest
+
+- name: Install compatible requests & urllib3
+  pip:
+    name:
+      - "requests==2.31.0"
+      - "urllib3<2.0"
+    executable: pip3
+
+- name: Install docker SDK for python
+  pip:
+    name: docker
+    executable: pip3
