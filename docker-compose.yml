@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
 
   backend:
@@ -5,40 +7,32 @@ services:
     container_name: backend_app
     ports:
       - "5000:5000"
-    restart: always
-    environment:
-      - DB_HOST=postgres
-      - DB_USER=admin
-      - DB_PASSWORD=admin
-      - DB_NAME=ecommerce
-    depends_on:
-      postgres:
-        condition: service_healthy
 
-  frontend:
-    build: ./frontend
-    container_name: frontend_app
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
-      - "3000:80"
+      - "9090:9090"
     depends_on:
       - backend
+      - node-exporter
 
-  postgres:
-    image: postgres:15
-    container_name: postgres_db
-    restart: always
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: ecommerce
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
     ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin"]
-      interval: 5s
-      retries: 5
+      - "3001:3000"
+    depends_on:
+      - prometheus
 
-volumes:
-  postgres_data:
+  node-exporter:
+    image: prom/node-exporter
+    container_name: node_exporter
+    ports:
+      - "9100:9100"
+
+networks:
+  default:
+    name: monitoring_net
