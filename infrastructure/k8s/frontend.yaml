@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ahmed1707hamed/ecommerce-frontend:latest
+          image: ahmed7amed9/frontend:latest
           ports:
             - containerPort: 80
