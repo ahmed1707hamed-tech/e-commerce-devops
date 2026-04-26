@@ -6,16 +6,7 @@ spec:
   rules:
     - http:
         paths:
-          # 👇 frontend
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: frontend
-                port:
-                  number: 80
-
-          # 👇 backend API (مهم جدًا)
+          # 👇 API + Swagger الأول (مهم الترتيب)
           - path: /api
             pathType: Prefix
             backend:
@@ -23,3 +14,28 @@ spec:
                 name: backend
                 port:
                   number: 5000
+
+          - path: /docs
+            pathType: Prefix
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 5000
+
+          - path: /redoc
+            pathType: Prefix
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 5000
+
+          # 👇 frontend في الآخر
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
