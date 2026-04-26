@@ -4,9 +4,9 @@ metadata:
   name: frontend-ingress
 spec:
   rules:
-    - host: ""
-      http:
+    - http:
         paths:
+          # 👇 frontend
           - path: /
             pathType: Prefix
             backend:
@@ -14,3 +14,12 @@ spec:
                 name: frontend
                 port:
                   number: 80
+
+          # 👇 backend API (مهم جدًا)
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 5000
