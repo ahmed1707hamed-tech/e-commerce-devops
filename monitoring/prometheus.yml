@@ -1,8 +1,7 @@
 global:
-  scrape_interval: 15s
+  scrape_interval: 5s
 
 scrape_configs:
-  - job_name: 'backend'
-    metrics_path: /metrics
+  - job_name: "k3s-node"
     static_configs:
-      - targets: ['34.239.218.164:32233']
+      - targets: ["host.docker.internal:9100"]
