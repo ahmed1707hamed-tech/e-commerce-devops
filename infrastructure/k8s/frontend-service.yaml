@@ -3,10 +3,9 @@ kind: Service
 metadata:
   name: frontend
 spec:
-  type: clusterIP
+  type: ClusterIP
   selector:
-    app: frontend
+    app: frontend   # 👈 لازم نفس اللي فوق
   ports:
     - port: 80
       targetPort: 80
-      nodePort: 30080
