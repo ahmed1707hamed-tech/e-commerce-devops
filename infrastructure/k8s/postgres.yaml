@@ -1,19 +1,13 @@
-# ════════════════════════════════════════════════════════════════
-#  PostgreSQL — Deployment + ClusterIP Service
-#
-#  ClusterIP: reachable only inside the cluster as "postgres:5432"
-#  Credentials are injected via a Secret (postgres-secret).
-# ════════════════════════════════════════════════════════════════
 apiVersion: v1
 kind: Secret
 metadata:
   name: postgres-secret
   namespace: default
 type: Opaque
-stringData:          # stringData auto-base64-encodes the values
-  POSTGRES_USER:     admin
+stringData:
+  POSTGRES_USER: admin
   POSTGRES_PASSWORD: admin
-  POSTGRES_DB:       ecommerce
+  POSTGRES_DB: ecommerce
 
 ---
 apiVersion: v1
@@ -26,7 +20,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi       # Keep small for t2.micro
+      storage: 500Mi   # 🔥 قللناها
 
 ---
 apiVersion: apps/v1
@@ -42,7 +36,7 @@ spec:
     matchLabels:
       app: postgres
   strategy:
-    type: Recreate      # Required for single-replica + PVC
+    type: Recreate
   template:
     metadata:
       labels:
@@ -50,27 +44,29 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: postgres:15-alpine   # Alpine variant — smaller image
+          image: postgres:15-alpine
           ports:
             - containerPort: 5432
+
           envFrom:
             - secretRef:
                 name: postgres-secret
+
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
+
+          # 🔥 أخف resources ممكنة
           resources:
             requests:
-              memory: "128Mi"
-              cpu: "100m"
+              memory: "80Mi"
+              cpu: "50m"
             limits:
-              memory: "256Mi"
-              cpu: "250m"
-          readinessProbe:
-            exec:
-              command: ["pg_isready", "-U", "admin"]
-            initialDelaySeconds: 10
-            periodSeconds: 5
+              memory: "150Mi"
+              cpu: "100m"
+
+          # ❌ شيلنا readiness مؤقتًا
+
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:
@@ -83,7 +79,7 @@ metadata:
   name: postgres
   namespace: default
 spec:
-  type: ClusterIP      # Not accessible outside the cluster
+  type: ClusterIP
   selector:
     app: postgres
   ports:
