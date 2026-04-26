@@ -6,7 +6,7 @@ spec:
   rules:
     - http:
         paths:
-          # 👇 API + Swagger الأول (مهم الترتيب)
+          # 👇 API + Swagger + OpenAPI
           - path: /api
             pathType: Prefix
             backend:
@@ -31,7 +31,15 @@ spec:
                 port:
                   number: 5000
 
-          # 👇 frontend في الآخر
+          - path: /openapi.json   # 🔥 ده المهم جدًا
+            pathType: Prefix
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 5000
+
+          # 👇 frontend
           - path: /
             pathType: Prefix
             backend:
