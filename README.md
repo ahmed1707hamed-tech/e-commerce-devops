@@ -4,15 +4,15 @@ A full-stack **E-Commerce application** deployed using modern **DevOps practices
 
 ---
 
-## 📸 Project Preview
-
-![Dashboard](images/frontend-dashboard.png)
-
----
-
 ## 🏗️ Architecture
 
 ![Architecture](images/arch.png)
+
+---
+
+## 📸 Project Preview
+
+![Dashboard](images/frontend-dashboard.png)
 
 ---
 
@@ -29,8 +29,8 @@ A full-stack **E-Commerce application** deployed using modern **DevOps practices
 * Docker
 * Kubernetes (k3s)
 * AWS EC2
-* Terraform (Infrastructure as Code)
-* Ansible (Provisioning)
+* Terraform
+* Ansible
 
 ### 🔄 CI/CD
 
@@ -46,8 +46,9 @@ A full-stack **E-Commerce application** deployed using modern **DevOps practices
 
 ## 📂 Project Structure
 
+```
 E-Commerce Platform-devops/
-
+│
 ├── backend/
 ├── frontend/
 ├── infrastructure/
@@ -58,6 +59,7 @@ E-Commerce Platform-devops/
 ├── monitoring/
 ├── docker-compose.yml
 └── README.md
+```
 
 ---
 
@@ -90,9 +92,9 @@ E-Commerce Platform-devops/
 
 ![Terraform](images/terraform-init.png)
 
-* EC2 Instance provisioning
-* Security Groups configuration
-* Automated setup using Terraform
+* EC2 provisioning
+* Security Groups
+* Infrastructure as Code
 
 ---
 
@@ -101,8 +103,8 @@ E-Commerce Platform-devops/
 ![Ansible](images/ansible-k3s-installation.png)
 
 * Install Docker
-* Install k3s (Kubernetes)
-* Setup environment automatically
+* Install k3s
+* Setup environment
 
 ---
 
@@ -112,18 +114,18 @@ E-Commerce Platform-devops/
 
 * Backend service
 * Frontend service
-* PostgreSQL database
+* PostgreSQL
 * Nginx Ingress
 
 ---
 
 ## 📊 Monitoring
 
-### 🔹 Prometheus Targets
+### 🔹 Prometheus
 
 ![Prometheus](images/prometheus-targets.png)
 
-### 🔹 Grafana Dashboard
+### 🔹 Grafana
 
 ![Grafana](images/grafana-dashboard.png)
 
@@ -133,40 +135,42 @@ E-Commerce Platform-devops/
 
 ![Swagger](images/swagger-api-docs.png)
 
-Swagger UI available at:
-http://<YOUR-IP>/docs
+Swagger UI:
+http://34.239.218.164/docs
 
 ---
 
-## 🌐 Deployment URLs (Example)
+## 🌐 Live Endpoints
 
 Frontend:
-http://<EC2-PUBLIC-IP>
+http://34.239.218.164
 
 API:
-http://<EC2-PUBLIC-IP>/api/products
+http://34.239.218.164/api/products
 
 Grafana:
-http://<EC2-PUBLIC-IP>:3000
+http://34.239.218.164:3000
 
 Prometheus:
-http://<EC2-PUBLIC-IP>:9090
+http://34.239.218.164:9090
 
 ---
 
 ## ▶️ Run Locally
 
+```
 docker-compose up -d
+```
 
 ---
 
 ## 🧠 Key Learnings
 
 * Kubernetes deployment & debugging
-* Handling image pull errors & scaling issues
+* Handling ImagePull & resource issues
 * Monitoring with Prometheus & Grafana
-* CI/CD automation with GitHub Actions
-* Infrastructure automation with Terraform & Ansible
+* CI/CD automation
+* Terraform & Ansible integration
 
 ---
 
@@ -180,3 +184,4 @@ https://github.com/ahmed1707hamed-tech
 ## ⭐ Give it a Star
 
 If you like this project, don't forget to ⭐ the repo!
+
