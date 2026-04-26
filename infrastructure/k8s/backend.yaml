@@ -2,9 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
-  namespace: default
-  labels:
-    app: backend
 spec:
   replicas: 1
   selector:
@@ -27,22 +24,11 @@ spec:
             - name: DB_PORT
               value: "5432"
             - name: DB_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: POSTGRES_DB
+              value: ecommerce
             - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: POSTGRES_USER
+              value: admin
             - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: POSTGRES_PASSWORD
-
-          # 🔥 أخف resources ممكنة
+              value: admin
           resources:
             requests:
               memory: "50Mi"
@@ -50,20 +36,3 @@ spec:
             limits:
               memory: "100Mi"
               cpu: "100m"
-
-          # ⚠️ شيلنا الـ probes مؤقتًا عشان خفيفة
-          # (ممكن نرجعها بعد ما النظام يستقر)
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend
-  namespace: default
-spec:
-  type: ClusterIP
-  selector:
-    app: backend
-  ports:
-    - port: 5000
-      targetPort: 5000
